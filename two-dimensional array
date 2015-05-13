@@ -1,0 +1,19 @@
+int** ary = new int[sizeY][sizeX]
+should be:
+
+int **ary = new int*[sizeY];
+for(int i = 0; i < sizeY; ++i) {
+    ary[i] = new int[sizeX];
+}
+and then clean up would be:
+
+for(int i = 0; i < sizeY; ++i) {
+    delete [] ary[i];
+}
+delete [] ary;
+EDIT: as Dietrich Epp pointed out in the comments this is not exactly a light weight solution. An alternative approach would be to use one large block of memory:
+
+int *ary = new int[sizeX*sizeY];
+
+// ary[i][j] is then rewritten as
+ary[i*sizeY+j]
